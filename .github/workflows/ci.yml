@@ -54,7 +54,7 @@ jobs:
         working-directory: codebase/rdicidr-0.1.0
 
       - name: Run Prettier
-        run: npm run prettier
+        run: npm run prettier -- --write
         working-directory: codebase/rdicidr-0.1.0
 
   test:
