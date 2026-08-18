@@ -50,11 +50,11 @@ jobs:
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
 
       - name: Run Lint
-        run: run npm lint
+        run: npm run lint
         working-directory: codebase/rdicidr-0.1.0
 
       - name: Run Prettier
-        run: run npm prettier
+        run: npm run prettier
         working-directory: codebase/rdicidr-0.1.0
 
   test:
@@ -78,7 +78,7 @@ jobs:
       - name: Run Test
         env:
           CI: true
-        run: run npm test
+        run: npm run test
         working-directory: codebase/rdicidr-0.1.0
 
   build:
@@ -100,5 +100,5 @@ jobs:
           key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
 
       - name: Run Build
-        run: run npm build
+        run: npm run build
         working-directory: codebase/rdicidr-0.1.0
