@@ -149,7 +149,7 @@ jobs:
 
       - name: Bump image tag in the manifest de K8s
         run: |
-          sed -i "s|image: .*/rdicidr:.*|image: 847460071795.dkr.ecr.us-east-1.amazonaws.com/rdicidr:${{ needs.docker-push.outputs.image_tag }}|" k8s/aws/service.yml
+          sed -i "s|image: .*/rdicidr:.*|image: 847460071795.dkr.ecr.us-east-1.amazonaws.com/rdicidr:${{ needs.docker-push.outputs.image_tag }}|" k8/aws/service.yml
 
       - name: Commit and push the bump
         run: |
