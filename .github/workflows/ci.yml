@@ -1,0 +1,104 @@
+name: CI FullStack Assesment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: SetUp Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Compute cache key
+        id: cache-key
+        run: echo "value=node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}" >> "$GITHUB_OUTPUT"
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: codebase/rdicidr-0.1.0
+
+      - name: Save Cache
+        uses: actions/cache/save@v5
+        with:
+          path: codebase/rdicidr-0.1.0/node_modules
+          key: ${{ steps.cache-key.outputs.value }}
+
+  lint:
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: SetUp Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - uses: actions/cache/restore@v5
+        id: cache
+        with:
+          path: codebase/rdicidr-0.1.0/node_modules
+          key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
+
+      - name: Run Lint
+        run: run npm lint
+        working-directory: codebase/rdicidr-0.1.0
+
+      - name: Run Prettier
+        run: run npm prettier
+        working-directory: codebase/rdicidr-0.1.0
+
+  test:
+    needs: [lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: SetUp Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - uses: actions/cache/restore@v5
+        id: cache
+        with:
+          path: codebase/rdicidr-0.1.0/node_modules
+          key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
+
+      - name: Run Test
+        env:
+          CI: true
+        run: run npm test
+        working-directory: codebase/rdicidr-0.1.0
+
+  build:
+    needs: [install, lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: SetUp Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - uses: actions/cache/restore@v5
+        id: cache
+        with:
+          path: codebase/rdicidr-0.1.0/node_modules
+          key: node-modules-${{ hashFiles('codebase/rdicidr-0.1.0/package-lock.json') }}
+
+      - name: Run Build
+        run: run npm build
+        working-directory: codebase/rdicidr-0.1.0

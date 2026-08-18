@@ -1,21 +1,21 @@
-FROM node:15 as builder
+FROM node:22 as builder
 
-WORKDIR
+WORKDIR /app
 
-COPY
+COPY package.json ./
 
-RUN 
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
 
-COPY
+COPY . .
 
-RUN 
+RUN npm run build
 
-FROM
+FROM nginx:stable-alpine
 
-WORKDIR
+WORKDIR /usr/share/nginx/html
 
-COPY
+COPY --from=builder /app/build .
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN 
-
-ENTRYPOINT 
+CMD ["nginx-debug", "-g", "daemon off;"]
