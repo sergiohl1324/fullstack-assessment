@@ -130,6 +130,7 @@ jobs:
         run: echo "image_tag=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Build and push
+        working-directory: codebase/rdicidr-0.1.0
         run: |
           docker build --platform linux/amd64 \
             -t ${{ steps.ecr-login.outputs.registry }}/rdicidr:${{ steps.vars.outputs.image_tag }} .
