@@ -31,7 +31,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: rdicidr
-        image: 847460071795.dkr.ecr.us-east-1.amazonaws.com/rdicidr:latest
+        image: 847460071795.dkr.ecr.us-east-1.amazonaws.com/rdicidr:3d14902
         ports:
         - containerPort: 8080
         livenessProbe:
